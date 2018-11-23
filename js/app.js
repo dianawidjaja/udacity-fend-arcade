@@ -5,11 +5,8 @@
  */
 const Enemy = function(start_x, start_y) {
     // Variables for each Enemy instance
-
-    // The image/sprite for our enemies, this uses
     this.sprite = 'images/enemy-bug.png';
-    this.max_x = 500;
-    this.max_y = 500;
+    this.max = [500, 500];
     this.x = start_x;
     this.y = start_y;
     this.speed = 200;
@@ -46,12 +43,10 @@ Enemy.prototype.render = function() {
  */
 const Player = function() {
     this.sprite = 'images/char-boy.png';
-    this.max_x = 400;
-    this.max_y = 400;
+    this.max = [400, 400];
+    this.min = [0, 0];
     this.x = 200;
     this.y = 385;
-    this.min_x = 0;
-    this.min_y = 0;
 }
 
 /**
@@ -60,18 +55,17 @@ const Player = function() {
  * @param {number} dt - a time delta between ticks
  */
 Player.prototype.update = function(dt) {
-    if (this.x < this.min_x) {
+    if (this.x < this.min[0]) {
         this.handleInput('right');
     }
-    if (this.x > this.max_x) {
+    if (this.x > this.max[0]) {
         this.handleInput('left');
     }
-    if (this.y > this.max_y) {
+    if (this.y > this.max[1]) {
         this.handleInput('up');
-        console.log("y: "+ this.y, "max_y: " + this.max_y);
     }
     // Handle win
-    if (this.y < this.min_y) {
+    if (this.y < this.min[1]) {
         console.log("y: "+ this.y, "min_y: " + this.min_y);
         this.reset();
     }
@@ -173,10 +167,23 @@ document.addEventListener('keyup', function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
+/**
+ * Enable player to select the enemy speed
+ * @param {object} selectEl - The select element for setting the enemy speed
+ */
 function setSpeed(selectEl) {
+    console.log(typeof(selectEl));
     for (const enemy of allEnemies) {
         player.reset();
         enemy.speed = selectEl.value;
         
     }
+}
+
+/**
+ * Enable player to select the sprite image
+ * @param {object} selectEl - The select element for setting the sprite image
+ */
+function setSprite(selectEl) {
+    player.sprite = 'images/'+selectEl.value+'.png';
 }
