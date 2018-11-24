@@ -3,7 +3,7 @@
  * Enemies move horizontally across the screen.
  * Colliding with an enemy reset the game.
  */
-const Enemy = function(start_x, start_y) {
+function Enemy(start_x, start_y) {
     // Variables for each Enemy instance
     this.sprite = 'images/enemy-bug.png';
     this.max = [500, 500];
@@ -41,7 +41,7 @@ Enemy.prototype.render = function() {
  * To win the game,
  * a player must reach the water area at the top of the screen.
  */
-const Player = function() {
+function Player() {
     this.sprite = 'images/char-boy.png';
     this.max = [400, 400];
     this.min = [0, 0];
@@ -66,7 +66,6 @@ Player.prototype.update = function(dt) {
     }
     // Handle win
     if (this.y < this.min[1]) {
-        console.log("y: "+ this.y, "min_y: " + this.min_y);
         this.reset();
     }
 
@@ -77,7 +76,7 @@ Player.prototype.update = function(dt) {
 }
 
 /**
- * Renders the player on screen.
+ * Render the player on screen.
  */
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -128,29 +127,25 @@ function checkCollisions() {
     })
 
 }
-    
 
 /**
  * Reset the game when a player wins or loses.
  * The player starts again at the bottom of the screen.
  */
 Player.prototype.reset = function() {
-    //this.x = this.start_x;
-    //this.y = this.start_y;
     this.x = 200;
     this.y = 385;
-    console.log("reset");
 }
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-
-const enemy1 = new Enemy(-50, 150);
-const enemy2 = new Enemy(-200, 60);
-const allEnemies = [];
-allEnemies.push(enemy1);
-allEnemies.push(enemy2);
+/**
+ * Instantiate player and enemies.
+ * Place all enemy objects in an array called allEnemies.
+ * Place the player object in a variable called player.
+ */
+const allEnemies = [new Enemy(-50, 140),
+                    new Enemy(-200, 60),
+                    new Enemy(-100, 230)
+                    ];
 
 const player = new Player();
 
@@ -168,20 +163,18 @@ document.addEventListener('keyup', function(e) {
 });
 
 /**
- * Enable player to select the enemy speed
+ * Enable player to select the enemy speed.
  * @param {object} selectEl - The select element for setting the enemy speed
  */
 function setSpeed(selectEl) {
-    console.log(typeof(selectEl));
     for (const enemy of allEnemies) {
         player.reset();
-        enemy.speed = selectEl.value;
-        
+        enemy.speed = selectEl.value;     
     }
 }
 
 /**
- * Enable player to select the sprite image
+ * Enable player to select the sprite image.
  * @param {object} selectEl - The select element for setting the sprite image
  */
 function setSprite(selectEl) {
